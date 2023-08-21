@@ -13,6 +13,9 @@
 		81A9C8FD2A93A2C500452FCB /* TTTARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8FC2A93A2C500452FCB /* TTTARView.swift */; };
 		81A9C8FF2A93A2E000452FCB /* TTTARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */; };
 		81A9C9042A93A34A00452FCB /* TTTView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C9032A93A34A00452FCB /* TTTView.swift */; };
+		81A9C9092A93A3B600452FCB /* ttt_o.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C9062A93A3B600452FCB /* ttt_o.usdz */; };
+		81A9C90A2A93A3B600452FCB /* ttt_board.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C9072A93A3B600452FCB /* ttt_board.usdz */; };
+		81A9C90B2A93A3B600452FCB /* ttt_x.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C9082A93A3B600452FCB /* ttt_x.usdz */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +26,9 @@
 		81A9C8FC2A93A2C500452FCB /* TTTARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTARView.swift; sourceTree = "<group>"; };
 		81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTARViewRepresentable.swift; sourceTree = "<group>"; };
 		81A9C9032A93A34A00452FCB /* TTTView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTView.swift; sourceTree = "<group>"; };
+		81A9C9062A93A3B600452FCB /* ttt_o.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_o.usdz; sourceTree = "<group>"; };
+		81A9C9072A93A3B600452FCB /* ttt_board.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_board.usdz; sourceTree = "<group>"; };
+		81A9C9082A93A3B600452FCB /* ttt_x.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_x.usdz; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +61,7 @@
 		81A9C8ED2A93A25B00452FCB /* TicTacToeAR */ = {
 			isa = PBXGroup;
 			children = (
+				81A9C9052A93A3AD00452FCB /* Assets */,
 				81A9C9012A93A2F500452FCB /* Logic */,
 				81A9C9002A93A2F100452FCB /* UI */,
 				81A9C8F22A93A25D00452FCB /* Assets.xcassets */,
@@ -87,6 +94,16 @@
 			children = (
 			);
 			path = Logic;
+			sourceTree = "<group>";
+		};
+		81A9C9052A93A3AD00452FCB /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				81A9C9072A93A3B600452FCB /* ttt_board.usdz */,
+				81A9C9062A93A3B600452FCB /* ttt_o.usdz */,
+				81A9C9082A93A3B600452FCB /* ttt_x.usdz */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,7 +165,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				81A9C8F62A93A25D00452FCB /* Preview Assets.xcassets in Resources */,
+				81A9C90A2A93A3B600452FCB /* ttt_board.usdz in Resources */,
 				81A9C8F32A93A25D00452FCB /* Assets.xcassets in Resources */,
+				81A9C90B2A93A3B600452FCB /* ttt_x.usdz in Resources */,
+				81A9C9092A93A3B600452FCB /* ttt_o.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
