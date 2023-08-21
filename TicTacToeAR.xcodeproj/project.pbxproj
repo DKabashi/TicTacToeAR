@@ -8,17 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		81A9C8EF2A93A25B00452FCB /* TicTacToeARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */; };
-		81A9C8F12A93A25B00452FCB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8F02A93A25B00452FCB /* ContentView.swift */; };
 		81A9C8F32A93A25D00452FCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C8F22A93A25D00452FCB /* Assets.xcassets */; };
 		81A9C8F62A93A25D00452FCB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C8F52A93A25D00452FCB /* Preview Assets.xcassets */; };
+		81A9C8FD2A93A2C500452FCB /* TTTARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8FC2A93A2C500452FCB /* TTTARView.swift */; };
+		81A9C8FF2A93A2E000452FCB /* TTTARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */; };
+		81A9C9042A93A34A00452FCB /* TTTView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C9032A93A34A00452FCB /* TTTView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		81A9C8EB2A93A25B00452FCB /* TicTacToeAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToeAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeARApp.swift; sourceTree = "<group>"; };
-		81A9C8F02A93A25B00452FCB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		81A9C8F22A93A25D00452FCB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81A9C8F52A93A25D00452FCB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		81A9C8FC2A93A2C500452FCB /* TTTARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTARView.swift; sourceTree = "<group>"; };
+		81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTARViewRepresentable.swift; sourceTree = "<group>"; };
+		81A9C9032A93A34A00452FCB /* TTTView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +55,8 @@
 		81A9C8ED2A93A25B00452FCB /* TicTacToeAR */ = {
 			isa = PBXGroup;
 			children = (
-				81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */,
-				81A9C8F02A93A25B00452FCB /* ContentView.swift */,
+				81A9C9012A93A2F500452FCB /* Logic */,
+				81A9C9002A93A2F100452FCB /* UI */,
 				81A9C8F22A93A25D00452FCB /* Assets.xcassets */,
 				81A9C8F42A93A25D00452FCB /* Preview Content */,
 			);
@@ -65,6 +69,24 @@
 				81A9C8F52A93A25D00452FCB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		81A9C9002A93A2F100452FCB /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				81A9C9032A93A34A00452FCB /* TTTView.swift */,
+				81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */,
+				81A9C8FC2A93A2C500452FCB /* TTTARView.swift */,
+				81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		81A9C9012A93A2F500452FCB /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Logic;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +159,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81A9C8F12A93A25B00452FCB /* ContentView.swift in Sources */,
+				81A9C9042A93A34A00452FCB /* TTTView.swift in Sources */,
+				81A9C8FF2A93A2E000452FCB /* TTTARViewRepresentable.swift in Sources */,
+				81A9C8FD2A93A2C500452FCB /* TTTARView.swift in Sources */,
 				81A9C8EF2A93A25B00452FCB /* TicTacToeARApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,7 +11,7 @@ import SwiftUI
 struct TicTacToeARApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TTTView()
         }
     }
 }
