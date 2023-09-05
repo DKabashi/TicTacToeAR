@@ -15,11 +15,7 @@ class TTTARView: ARView {
     required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
     }
-    
-    dynamic required init?(coder decoder: NSCoder) {
-        fatalError("not used")
-    }
-    
+
     convenience init() {
         self.init(frame: UIScreen.main.bounds)
         setup()
@@ -27,16 +23,18 @@ class TTTARView: ARView {
     
     private var cancellables: Set<AnyCancellable> = []
     private var boardEntity: ModelEntity!
+    private var isXTurn = true
     
     @objc private func viewTapped(_ recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: self)
-        if let entity = self.entity(at: tapLocation) as? ModelEntity, let entityName = XOPosition(rawValue: entity.name) {
-            addXOEntity(isX: true, in: entity)
+        if let entity = self.entity(at: tapLocation) as? ModelEntity, XOPosition(rawValue: entity.name) != nil {
+            addXOEntity(in: entity)
         }
     }
     
-    private func addXOEntity(isX: Bool, in entity: ModelEntity) {
-        ModelEntity.loadModelAsync(named: isX ? "ttt_x" : "ttt_o")
+    private func addXOEntity(in entity: ModelEntity) {
+        
+        ModelEntity.loadModelAsync(named: (isXTurn ? TTTAsset.x : TTTAsset.o).rawValue)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .failure(let err): print(err.localizedDescription)
@@ -45,6 +43,7 @@ class TTTARView: ARView {
             }, receiveValue: { [weak self] xoEntity in
                 guard let self = self else { return }
                 entity.addChild(xoEntity)
+                self.isXTurn.toggle()
             })
             .store(in: &cancellables)
     }
@@ -54,14 +53,14 @@ class TTTARView: ARView {
         
         let anchor = AnchorEntity(plane: .horizontal, minimumBounds: [0.2, 0.2])
         anchor.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchor)
-        ModelEntity.loadModelAsync(named: "ttt_board")
+        ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .failure(let err): print(err.localizedDescription)
                 default: return
                 }
             }, receiveValue: { [weak self] entity in
-                entity.name = "board"
+                entity.name = TTTAsset.board.rawValue
                 entity.generateCollisionShapes(recursive: true)
                 anchor.addChild(entity)
                 
@@ -74,13 +73,13 @@ class TTTARView: ARView {
             })
             .store(in: &cancellables)
     }
-    
+  
+    /// x options: [-46, 0.274, 46],
+    /// z options: [-44, 3, 51]
     private func generateTapEntity(in postion: XOPosition, anchor: AnchorEntity) {
         var xPos: Float!
         var zPos: Float!
-        
-//        [-46, 0.274, 46]
-//        [-44, 3, 51]
+
         switch postion {
         case .topLeft:
             xPos = -46
@@ -119,6 +118,10 @@ class TTTARView: ARView {
         tapEntity.name = postion.rawValue
         tapEntity.position = [xPos, 0, zPos]
         anchor.addChild(tapEntity)
+    }
+
+    dynamic required init?(coder decoder: NSCoder) {
+        fatalError("not used")
     }
 }
 
