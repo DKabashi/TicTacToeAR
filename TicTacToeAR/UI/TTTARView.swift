@@ -30,66 +30,23 @@ class TTTARView: ARView {
     
     @objc private func viewTapped(_ recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: self)
-        if let entity = self.entity(at: tapLocation) as? ModelEntity {
-            
-            switch entity.name {
-            case "topLeft":
-                ModelEntity.loadModelAsync(named: "ttt_o")
-                    .sink(receiveCompletion: { completion in
-                        switch completion {
-                        case .failure(let err): print(err.localizedDescription)
-                        default: return
-                        }
-                    }, receiveValue: { [weak self] oEntity in
-                        //entity.generateCollisionShapes(recursive: true)
-                        // x: -46, 0.274, 46,
-                        // z: -44, 3, 51 (posht)
-                        //entity.position = [[-46, 0.274, 46].randomElement()!, 0, [-44, 3, 51].randomElement()!]
-                        entity.addChild(oEntity)
-                        //self?.boardEntity.addChild(entity)
-                    })
-                    .store(in: &cancellables)
-                
-                
-            case "topCenter":
-                
-                ModelEntity.loadModelAsync(named: "ttt_x")
-                    .sink(receiveCompletion: { completion in
-                        switch completion {
-                        case .failure(let err): print(err.localizedDescription)
-                        default: return
-                        }
-                    }, receiveValue: { [weak self] xEntity in
-                        //entity.generateCollisionShapes(recursive: true)
-                        // x: -46, 0.274, 46,
-                        // z: -44, 3, 51 (posht)
-                        //entity.position = [[-46, 0.274, 46].randomElement()!, 0, [-44, 3, 51].randomElement()!]
-                        entity.addChild(xEntity)
-                        //self?.boardEntity.addChild(entity)
-                    })
-                    .store(in: &cancellables)
-                
-//                ModelEntity.loadModelAsync(named: "ttt_o")
-//                    .sink(receiveCompletion: { completion in
-//                        switch completion {
-//                        case .failure(let err): print(err.localizedDescription)
-//                        default: return
-//                        }
-//                    }, receiveValue: { [weak self] entity in
-//                        entity.name = "board"
-//                        entity.generateCollisionShapes(recursive: true)
-//                        // x: -46, 0.274, 46,
-//                        // z: -44, 3, 51 (posht)
-//                        entity.position = [[-46, 0.274, 46].randomElement()!, 0, [-44, 3, 51].randomElement()!]
-//
-//                        self?.boardEntity.addChild(entity)
-//                    })
-//                    .store(in: &cancellables)
-            default: return
-            }
-            
-           
+        if let entity = self.entity(at: tapLocation) as? ModelEntity, let entityName = XOPosition(rawValue: entity.name) {
+            addXOEntity(isX: true, in: entity)
         }
+    }
+    
+    private func addXOEntity(isX: Bool, in entity: ModelEntity) {
+        ModelEntity.loadModelAsync(named: isX ? "ttt_x" : "ttt_o")
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let err): print(err.localizedDescription)
+                default: return
+                }
+            }, receiveValue: { [weak self] xoEntity in
+                guard let self = self else { return }
+                entity.addChild(xoEntity)
+            })
+            .store(in: &cancellables)
     }
     
     private func setup() {
