@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum XOPosition: String {
-    case topLeft, topCenter, rightCenter,
+enum XOPosition: String, CaseIterable {
+    case topLeft, topCenter, topRight,
          centerLeft, centerCenter, centerRight,
          bottomLeft, bottomCenter, bottomRight
 }

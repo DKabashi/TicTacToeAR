@@ -65,27 +65,60 @@ class TTTARView: ARView {
                 entity.generateCollisionShapes(recursive: true)
                 anchor.addChild(entity)
                 
-                let rectangle = MeshResource.generatePlane(width: 45.66, depth: 45.66)
-                let material = SimpleMaterial(color: .red, isMetallic: false)
-                
-                let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
-                tapEntity.generateCollisionShapes(recursive: true)
-                tapEntity.name = "topLeft"
-                //tapEntity.position = [[-46, 0.274, 46].randomElement()!, 0, [-44, 3, 51].randomElement()!]
-                tapEntity.position = [-46, 0, -44]
-                anchor.addChild(tapEntity)
-                
-                let material2 = SimpleMaterial(color: .green, isMetallic: false)
-                let tapEntity2 = ModelEntity(mesh: rectangle, materials: [material2])
-                tapEntity2.generateCollisionShapes(recursive: true)
-                tapEntity2.name = "topCenter"
-                tapEntity2.position = [0.274, 0, -44]
-                anchor.addChild(tapEntity2)
+                for position in XOPosition.allCases {
+                    self?.generateTapEntity(in: position, anchor: anchor)
+                }
                 
                 self?.scene.addAnchor(anchor)
                 self?.boardEntity = entity
             })
             .store(in: &cancellables)
+    }
+    
+    private func generateTapEntity(in postion: XOPosition, anchor: AnchorEntity) {
+        var xPos: Float!
+        var zPos: Float!
+        
+//        [-46, 0.274, 46]
+//        [-44, 3, 51]
+        switch postion {
+        case .topLeft:
+            xPos = -46
+            zPos = -44
+        case .topCenter:
+            xPos = 0.274
+            zPos = -44
+        case .topRight:
+            xPos = 46
+            zPos = -44
+        case .centerLeft:
+            xPos = -46
+            zPos = 3
+        case .centerCenter:
+            xPos = 0.274
+            zPos = 3
+        case .centerRight:
+            xPos = 46
+            zPos = 3
+        case .bottomLeft:
+            xPos = -46
+            zPos = 51
+        case .bottomCenter:
+            xPos = 0.274
+            zPos = 51
+        case .bottomRight:
+            xPos = 46
+            zPos = 51
+        }
+        
+        let rectangle = MeshResource.generatePlane(width: 45.66, depth: 45.66)
+        let material = SimpleMaterial(color: .clear, isMetallic: false)
+        
+        let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
+        tapEntity.generateCollisionShapes(recursive: true)
+        tapEntity.name = postion.rawValue
+        tapEntity.position = [xPos, 0, zPos]
+        anchor.addChild(tapEntity)
     }
 }
 
