@@ -18,6 +18,7 @@
 		81A9C90B2A93A3B600452FCB /* ttt_x.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C9082A93A3B600452FCB /* ttt_x.usdz */; };
 		81F7C7452AA73F3500D8EB50 /* XOPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F7C7442AA73F3500D8EB50 /* XOPosition.swift */; };
 		81F7C7472AA7681100D8EB50 /* TTTAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F7C7462AA7681100D8EB50 /* TTTAsset.swift */; };
+		81F7C7492AA8990200D8EB50 /* TTTViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F7C7482AA8990200D8EB50 /* TTTViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		81A9C9082A93A3B600452FCB /* ttt_x.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_x.usdz; sourceTree = "<group>"; };
 		81F7C7442AA73F3500D8EB50 /* XOPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOPosition.swift; sourceTree = "<group>"; };
 		81F7C7462AA7681100D8EB50 /* TTTAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTAsset.swift; sourceTree = "<group>"; };
+		81F7C7482AA8990200D8EB50 /* TTTViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,10 +87,10 @@
 		81A9C9002A93A2F100452FCB /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */,
 				81A9C9032A93A34A00452FCB /* TTTView.swift */,
 				81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */,
 				81A9C8FC2A93A2C500452FCB /* TTTARView.swift */,
-				81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				81F7C7442AA73F3500D8EB50 /* XOPosition.swift */,
+				81F7C7482AA8990200D8EB50 /* TTTViewModel.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 			files = (
 				81F7C7452AA73F3500D8EB50 /* XOPosition.swift in Sources */,
 				81A9C9042A93A34A00452FCB /* TTTView.swift in Sources */,
+				81F7C7492AA8990200D8EB50 /* TTTViewModel.swift in Sources */,
 				81A9C8FF2A93A2E000452FCB /* TTTARViewRepresentable.swift in Sources */,
 				81F7C7472AA7681100D8EB50 /* TTTAsset.swift in Sources */,
 				81A9C8FD2A93A2C500452FCB /* TTTARView.swift in Sources */,
