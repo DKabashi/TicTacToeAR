@@ -27,13 +27,18 @@ class TTTARView: ARView {
     
     @objc private func viewTapped(_ recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: self)
-        if let entity = self.entity(at: tapLocation) as? ModelEntity, XOPosition(rawValue: entity.name) != nil {
-            addXOEntity(in: entity)
+        if let entity = self.entity(at: tapLocation) as? ModelEntity, let position = XOPosition(rawValue: entity.name) {
+            addXOEntity(in: entity, at: position)
         }
     }
     
-    private func addXOEntity(in entity: ModelEntity) {
+    private func addXOEntity(in entity: ModelEntity, at postion: XOPosition) {
+        let entityHasNoValue =  boardEntity.scene?.anchors.first?.children.first {
+                $0.name == postion.rawValue
+        }?.children.allSatisfy { $0.name != "checked" } ?? false
         
+        guard entityHasNoValue else { return }
+
         ModelEntity.loadModelAsync(named: (isXTurn ? TTTAsset.x : TTTAsset.o).rawValue)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -42,6 +47,7 @@ class TTTARView: ARView {
                 }
             }, receiveValue: { [weak self] xoEntity in
                 guard let self = self else { return }
+                xoEntity.name = "checked"
                 entity.addChild(xoEntity)
                 self.isXTurn.toggle()
             })
