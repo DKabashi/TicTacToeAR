@@ -14,8 +14,8 @@ class TTTViewModel {
     private var boardEntity: ModelEntity!
     private var isXTurn = true
     /// Key: Position in  board,
-    /// Value: True = x, false = o, nil = no value assigned yet
-    private var boardValues = [XOPosition: Bool?]()
+    /// Value: isX; true = x, false = o
+    private var boardValues = [XOPosition: Bool]()
     private var cancellables: Set<AnyCancellable> = []
     
     func addBoardEntity(in scene: Scene) {
@@ -67,6 +67,11 @@ class TTTViewModel {
             .store(in: &cancellables)
     }
     
+    private func restartGame() {
+        isXTurn = true
+        boardValues = [:]
+    }
+    
     private func checkGameStatus() {
         let topLeftValue = boardValues[.topLeft]
         let topCenterValue = boardValues[.topCenter]
@@ -88,12 +93,12 @@ class TTTViewModel {
             let xWonCenterVertical = topCenterValue == true && centerCenterValue == true && bottomCenterValue == true
             let xWonRightVertical = topRightValue == true && centerRightValue == true && bottomRightValue == true
             
-           guard xWonTopHorizontal || xWonCenterHorizontal || xWonBottomHorizontal ||
+            if xWonTopHorizontal || xWonCenterHorizontal || xWonBottomHorizontal ||
                     xWonDiagonalLeft || xWonDiagonalRight ||
-                    xWonLeftVertical || xWonCenterVertical || xWonRightVertical else {
-               return
-           }
-           print("x won")
+                    xWonLeftVertical || xWonCenterVertical || xWonRightVertical {
+                print("x won")
+                return
+            }
         } else {
             let oWonTopHorizontal = topLeftValue == true && topCenterValue == true && topRightValue == true
             let oWonCenterHorizontal = centerLeftValue == true && centerCenterValue == true && centerRightValue == true
@@ -104,12 +109,17 @@ class TTTViewModel {
             let oWonCenterVertical = topCenterValue == true && centerCenterValue == true && bottomCenterValue == true
             let oWonRightVertical = topRightValue == true && centerRightValue == true && bottomRightValue == true
             
-           guard oWonTopHorizontal || oWonCenterHorizontal || oWonBottomHorizontal ||
+            if oWonTopHorizontal || oWonCenterHorizontal || oWonBottomHorizontal ||
                     oWonDiagonalLeft || oWonDiagonalRight ||
-                    oWonLeftVertical || oWonCenterVertical || oWonRightVertical else {
-               return
-           }
-           print("o won")
+                    oWonLeftVertical || oWonCenterVertical || oWonRightVertical {
+                print("o won")
+                return
+            }
+        }
+        
+        if boardValues.count == 9 {
+            print("game over, no winners")
+            return
         }
         
     }
