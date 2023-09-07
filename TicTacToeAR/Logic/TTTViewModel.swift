@@ -13,7 +13,9 @@ import Combine
 class TTTViewModel {
     private var boardEntity: ModelEntity!
     private var isXTurn = true
-    
+    /// Key: Position in  board,
+    /// Value: True = x, false = o, nil = no value assigned yet
+    private var boardValues = [XOPosition: Bool?]()
     private var cancellables: Set<AnyCancellable> = []
     
     func addBoardEntity(in scene: Scene) {
@@ -44,7 +46,7 @@ class TTTViewModel {
     func addXOEntity(in entity: ModelEntity, at postion: XOPosition) {
         let entityHasNoValue =  boardEntity.scene?.anchors.first?.children.first {
                 $0.name == postion.rawValue
-        }?.children.allSatisfy { $0.name != "checked" } ?? false
+        }?.children.allSatisfy { $0.name != TTTAsset.x.rawValue && $0.name != TTTAsset.o.rawValue } ?? false
         
         guard entityHasNoValue else { return }
 
@@ -56,11 +58,60 @@ class TTTViewModel {
                 }
             }, receiveValue: { [weak self] xoEntity in
                 guard let self = self else { return }
-                xoEntity.name = "checked"
+                xoEntity.name = (self.isXTurn ? TTTAsset.x : TTTAsset.o).rawValue
                 entity.addChild(xoEntity)
+                self.boardValues[postion] = self.isXTurn
+                self.checkGameStatus()
                 self.isXTurn.toggle()
             })
             .store(in: &cancellables)
+    }
+    
+    private func checkGameStatus() {
+        let topLeftValue = boardValues[.topLeft]
+        let topCenterValue = boardValues[.topCenter]
+        let topRightValue = boardValues[.topRight]
+        let centerLeftValue = boardValues[.centerLeft]
+        let centerCenterValue = boardValues[.centerCenter]
+        let centerRightValue = boardValues[.centerRight]
+        let bottomLeftValue = boardValues[.bottomLeft]
+        let bottomCenterValue = boardValues[.bottomCenter]
+        let bottomRightValue = boardValues[.bottomRight]
+        
+        if isXTurn {
+            let xWonTopHorizontal = topLeftValue == true && topCenterValue == true && topRightValue == true
+            let xWonCenterHorizontal = centerLeftValue == true && centerCenterValue == true && centerRightValue == true
+            let xWonBottomHorizontal = bottomLeftValue == true && bottomCenterValue == true && bottomRightValue == true
+            let xWonDiagonalLeft = topLeftValue == true && centerCenterValue == true && bottomRightValue == true
+            let xWonDiagonalRight = topRightValue == true && centerCenterValue == true && bottomLeftValue == true
+            let xWonLeftVertical = topLeftValue == true && centerLeftValue == true && bottomLeftValue == true
+            let xWonCenterVertical = topCenterValue == true && centerCenterValue == true && bottomCenterValue == true
+            let xWonRightVertical = topRightValue == true && centerRightValue == true && bottomRightValue == true
+            
+           guard xWonTopHorizontal || xWonCenterHorizontal || xWonBottomHorizontal ||
+                    xWonDiagonalLeft || xWonDiagonalRight ||
+                    xWonLeftVertical || xWonCenterVertical || xWonRightVertical else {
+               return
+           }
+           print("x won")
+        } else {
+            let oWonTopHorizontal = topLeftValue == true && topCenterValue == true && topRightValue == true
+            let oWonCenterHorizontal = centerLeftValue == true && centerCenterValue == true && centerRightValue == true
+            let oWonBottomHorizontal = bottomLeftValue == true && bottomCenterValue == true && bottomRightValue == true
+            let oWonDiagonalLeft = topLeftValue == true && centerCenterValue == true && bottomRightValue == true
+            let oWonDiagonalRight = topRightValue == true && centerCenterValue == true && bottomLeftValue == true
+            let oWonLeftVertical = topLeftValue == true && centerLeftValue == true && bottomLeftValue == true
+            let oWonCenterVertical = topCenterValue == true && centerCenterValue == true && bottomCenterValue == true
+            let oWonRightVertical = topRightValue == true && centerRightValue == true && bottomRightValue == true
+            
+           guard oWonTopHorizontal || oWonCenterHorizontal || oWonBottomHorizontal ||
+                    oWonDiagonalLeft || oWonDiagonalRight ||
+                    oWonLeftVertical || oWonCenterVertical || oWonRightVertical else {
+               return
+           }
+           print("o won")
+        }
+        
     }
     
     /// x options: [-46, 0.274, 46],
