@@ -100,7 +100,7 @@ class TTTViewModel {
         }
         
         let rectangle = MeshResource.generatePlane(width: 45.66, depth: 45.66)
-        let material = SimpleMaterial(color: .clear, isMetallic: false)
+        let material = SimpleMaterial(color: .clear.withAlphaComponent(0.0000001), isMetallic: false)
         
         let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
         tapEntity.generateCollisionShapes(recursive: true)
