@@ -21,6 +21,7 @@ class TTTViewModel {
     func addBoardEntity(in scene: Scene) {
         let anchor = AnchorEntity(plane: .horizontal, minimumBounds: [0.2, 0.2])
         anchor.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchor)
+
         ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -28,19 +29,52 @@ class TTTViewModel {
                 default: return
                 }
             }, receiveValue: { [weak self] entity in
+                guard let self = self else { return }
                 entity.name = TTTAsset.board.rawValue
                 entity.generateCollisionShapes(recursive: true)
                 anchor.addChild(entity)
                 
                 for position in XOPosition.allCases {
-                    self?.generateTapEntity(in: position, anchor: anchor)
+                    self.generateTapEntity(in: position, anchor: anchor)
                 }
                 
+                let textEntity = self.generateTextEntity(text: self.isXTurn == true ? "X Won" : "O Won")
+                anchor.addChild(textEntity)
+                
                 scene.addAnchor(anchor)
-                self?.boardEntity = entity
+                self.boardEntity = entity
             })
             .store(in: &cancellables)
+        
     }
+//
+//    private func addTextEntity(in scene: Scene) {
+//        //let textAnchor = AnchorEntity()
+//        let textEntity = generateTextEntity(text: isXTurn ? "X Won" : "O Won")
+//        boardEntity.addChild(textEntity)
+//        //scene.addAnchor(textAnchor)
+//    }
+    
+    func generateTextEntity(text: String) -> ModelEntity {
+            let textMaterial = SimpleMaterial(color: .black, roughness: 5, isMetallic: false)
+            
+            let depthVar: Float = 3
+            let fontVar = UIFont.systemFont(ofSize: 13)
+        let containerFrameVar = CGRect(x: 0.2, y: 0, width: 50, height: 20)
+            let alignmentVar: CTTextAlignment = .center
+            let lineBreakModeVar : CTLineBreakMode = .byWordWrapping
+            
+            let textMeshResource : MeshResource = .generateText(text,
+                                               extrusionDepth: depthVar,
+                                               font: fontVar,
+                                               containerFrame: containerFrameVar,
+                                               alignment: alignmentVar,
+                                               lineBreakMode: lineBreakModeVar)
+            
+            let textEntity = ModelEntity(mesh: textMeshResource, materials: [textMaterial])
+            
+            return textEntity
+        }
     
     
     func addXOEntity(in entity: ModelEntity, at postion: XOPosition) {
