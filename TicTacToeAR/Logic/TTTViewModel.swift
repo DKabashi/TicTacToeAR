@@ -13,7 +13,7 @@ import Combine
 class TTTViewModel {
     private var boardEntity: ModelEntity!
     private var isXTurn = true
-    /// Key: Position in  board,
+    /// Key: Position in  board.
     /// Value: isX; true = x, false = o
     private var boardValues = [XOPosition: Bool]()
     private var cancellables: Set<AnyCancellable> = []
@@ -38,44 +38,12 @@ class TTTViewModel {
                     self.generateTapEntity(in: position, anchor: anchor)
                 }
                 
-                let textEntity = self.generateTextEntity(text: self.isXTurn == true ? "X Won" : "O Won")
-                anchor.addChild(textEntity)
-                
                 scene.addAnchor(anchor)
                 self.boardEntity = entity
             })
             .store(in: &cancellables)
         
     }
-//
-//    private func addTextEntity(in scene: Scene) {
-//        //let textAnchor = AnchorEntity()
-//        let textEntity = generateTextEntity(text: isXTurn ? "X Won" : "O Won")
-//        boardEntity.addChild(textEntity)
-//        //scene.addAnchor(textAnchor)
-//    }
-    
-    func generateTextEntity(text: String) -> ModelEntity {
-            let textMaterial = SimpleMaterial(color: .black, roughness: 5, isMetallic: false)
-            
-            let depthVar: Float = 3
-            let fontVar = UIFont.systemFont(ofSize: 13)
-        let containerFrameVar = CGRect(x: 0.2, y: 0, width: 50, height: 20)
-            let alignmentVar: CTTextAlignment = .center
-            let lineBreakModeVar : CTLineBreakMode = .byWordWrapping
-            
-            let textMeshResource : MeshResource = .generateText(text,
-                                               extrusionDepth: depthVar,
-                                               font: fontVar,
-                                               containerFrame: containerFrameVar,
-                                               alignment: alignmentVar,
-                                               lineBreakMode: lineBreakModeVar)
-            
-            let textEntity = ModelEntity(mesh: textMeshResource, materials: [textMaterial])
-            
-            return textEntity
-        }
-    
     
     func addXOEntity(in entity: ModelEntity, at postion: XOPosition) {
         let entityHasNoValue =  boardEntity.scene?.anchors.first?.children.first {
@@ -93,6 +61,11 @@ class TTTViewModel {
             }, receiveValue: { [weak self] xoEntity in
                 guard let self = self else { return }
                 xoEntity.name = (self.isXTurn ? TTTAsset.x : TTTAsset.o).rawValue
+                // Rotate entitiy
+                // Figure out how to move it up too
+                // and animate everything
+//                xoEntity.orientation = simd_quatf(angle: .pi/2,
+//                                                  axis: [1,0,0])
                 entity.addChild(xoEntity)
                 self.boardValues[postion] = self.isXTurn
                 self.checkGameStatus()
