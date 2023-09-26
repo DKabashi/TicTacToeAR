@@ -61,13 +61,22 @@ class TTTViewModel {
             }, receiveValue: { [weak self] xoEntity in
                 guard let self = self else { return }
                 xoEntity.name = (self.isXTurn ? TTTAsset.x : TTTAsset.o).rawValue
-                // Rotate entitiy
-                // Figure out how to move it up too
-                // and animate everything
-//                xoEntity.orientation = simd_quatf(angle: .pi/2,
-//                                                  axis: [1,0,0])
+
                 entity.addChild(xoEntity)
                 self.boardValues[postion] = self.isXTurn
+                
+                
+                var translation = xoEntity.transform
+                translation.translation = SIMD3(SCNVector3(0, self.isXTurn ? 14 : 18, 0))
+                xoEntity.move(to: translation, relativeTo: xoEntity.parent, duration: 0.3, timingFunction: .easeInOut)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    var rotation = xoEntity.transform
+                    rotation.rotation = simd_quatf(angle: .pi/2, axis: [1,0,0])
+                    xoEntity.move(to: rotation, relativeTo: xoEntity.parent, duration: 0.3, timingFunction: .easeInOut)
+                }
+              
+                
                 self.checkGameStatus()
                 self.isXTurn.toggle()
             })
