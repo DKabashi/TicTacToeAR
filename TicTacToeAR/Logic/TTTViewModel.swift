@@ -10,18 +10,9 @@ import RealityKit
 import UIKit
 import Combine
 
-#warning("extract this to its own file")
-struct XOModel {
-    var isX: Bool
-    var entity: ModelEntity
-}
-
 class TTTViewModel {
     private var boardEntity: ModelEntity!
     private var isXTurn = true
-    #warning("rewrite this doc part")
-    /// Key: Position in  board.
-    /// Value: isX; true = x, false = o
     private var boardValues = [XOPosition: XOModel]()
     private var cancellables: Set<AnyCancellable> = []
     
