@@ -10,12 +10,19 @@ import RealityKit
 import UIKit
 import Combine
 
+#warning("extract this to its own file")
+struct XOModel {
+    var isX: Bool
+    var entity: ModelEntity
+}
+
 class TTTViewModel {
     private var boardEntity: ModelEntity!
     private var isXTurn = true
+    #warning("rewrite this doc part")
     /// Key: Position in  board.
     /// Value: isX; true = x, false = o
-    private var boardValues = [XOPosition: Bool]()
+    private var boardValues = [XOPosition: XOModel]()
     private var cancellables: Set<AnyCancellable> = []
     
     func addBoardEntity(in scene: Scene) {
@@ -63,24 +70,27 @@ class TTTViewModel {
                 xoEntity.name = (self.isXTurn ? TTTAsset.x : TTTAsset.o).rawValue
 
                 entity.addChild(xoEntity)
-                self.boardValues[postion] = self.isXTurn
-                
-                
-                var translation = xoEntity.transform
-                translation.translation = SIMD3(SCNVector3(0, self.isXTurn ? 14 : 18, 0))
-                xoEntity.move(to: translation, relativeTo: xoEntity.parent, duration: 0.3, timingFunction: .easeInOut)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    var rotation = xoEntity.transform
-                    rotation.rotation = simd_quatf(angle: .pi/2, axis: [1,0,0])
-                    xoEntity.move(to: rotation, relativeTo: xoEntity.parent, duration: 0.3, timingFunction: .easeInOut)
-                }
-              
+                self.boardValues[postion] = XOModel(isX: self.isXTurn, entity: xoEntity)
                 
                 self.checkGameStatus()
                 self.isXTurn.toggle()
             })
             .store(in: &cancellables)
+    }
+    
+    private func animateEntities(positions: [XOPosition]) {
+        for position in positions {
+            guard let xoEntity = boardValues[position]?.entity else { continue }
+            var translation = xoEntity.transform
+            translation.translation = SIMD3(SCNVector3(0, self.isXTurn ? 14 : 18, 0))
+            xoEntity.move(to: translation, relativeTo: xoEntity.parent, duration: 0.3, timingFunction: .easeInOut)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                var rotation = xoEntity.transform
+                rotation.rotation = simd_quatf(angle: .pi/2, axis: [1,0,0])
+                xoEntity.move(to: rotation, relativeTo: xoEntity.parent, duration: 0.3, timingFunction: .easeInOut)
+            }
+        }
     }
     
     private func restartGame() {
@@ -100,36 +110,89 @@ class TTTViewModel {
         let bottomRightValue = boardValues[.bottomRight]
         
         if isXTurn {
-            let xWonTopHorizontal = topLeftValue == true && topCenterValue == true && topRightValue == true
-            let xWonCenterHorizontal = centerLeftValue == true && centerCenterValue == true && centerRightValue == true
-            let xWonBottomHorizontal = bottomLeftValue == true && bottomCenterValue == true && bottomRightValue == true
-            let xWonDiagonalLeft = topLeftValue == true && centerCenterValue == true && bottomRightValue == true
-            let xWonDiagonalRight = topRightValue == true && centerCenterValue == true && bottomLeftValue == true
-            let xWonLeftVertical = topLeftValue == true && centerLeftValue == true && bottomLeftValue == true
-            let xWonCenterVertical = topCenterValue == true && centerCenterValue == true && bottomCenterValue == true
-            let xWonRightVertical = topRightValue == true && centerRightValue == true && bottomRightValue == true
+            let xWonTopHorizontal = topLeftValue?.isX == true && topCenterValue?.isX == true && topRightValue?.isX == true
+            if xWonTopHorizontal {
+                animateEntities(positions: [.topLeft, .topCenter, .topRight])
+            }
             
-            if xWonTopHorizontal || xWonCenterHorizontal || xWonBottomHorizontal ||
-                    xWonDiagonalLeft || xWonDiagonalRight ||
-                    xWonLeftVertical || xWonCenterVertical || xWonRightVertical {
-                print("x won")
-                return
+            let xWonCenterHorizontal = centerLeftValue?.isX == true && centerCenterValue?.isX == true && centerRightValue?.isX == true
+            if xWonCenterHorizontal {
+                animateEntities(positions: [.centerLeft, .centerCenter, .centerRight])
+            }
+            
+            let xWonBottomHorizontal = bottomLeftValue?.isX == true && bottomCenterValue?.isX == true && bottomRightValue?.isX == true
+            if xWonBottomHorizontal {
+                animateEntities(positions: [.bottomLeft, .bottomCenter, .bottomRight])
+            }
+            
+            let xWonDiagonalLeft = topLeftValue?.isX == true && centerCenterValue?.isX == true && bottomRightValue?.isX == true
+            if xWonDiagonalLeft {
+                animateEntities(positions: [.topLeft, .centerCenter, .bottomRight])
+            }
+            
+            let xWonDiagonalRight = topRightValue?.isX == true && centerCenterValue?.isX == true && bottomLeftValue?.isX == true
+            if xWonDiagonalRight {
+                animateEntities(positions: [.topRight, .centerCenter, .bottomLeft])
+            }
+            
+            let xWonLeftVertical = topLeftValue?.isX == true && centerLeftValue?.isX == true && bottomLeftValue?.isX == true
+            if xWonLeftVertical {
+                animateEntities(positions: [.topLeft, .centerLeft, .bottomLeft])
+            }
+            
+            let xWonCenterVertical = topCenterValue?.isX == true && centerCenterValue?.isX == true && bottomCenterValue?.isX == true
+            if xWonCenterVertical {
+                animateEntities(positions: [.topCenter, .centerCenter, .bottomCenter])
+            }
+            
+            let xWonRightVertical = topRightValue?.isX == true && centerRightValue?.isX == true && bottomRightValue?.isX == true
+            if xWonRightVertical {
+                animateEntities(positions: [.topRight, .centerRight, .bottomRight])
             }
         } else {
-            let oWonTopHorizontal = topLeftValue == true && topCenterValue == true && topRightValue == true
-            let oWonCenterHorizontal = centerLeftValue == true && centerCenterValue == true && centerRightValue == true
-            let oWonBottomHorizontal = bottomLeftValue == true && bottomCenterValue == true && bottomRightValue == true
-            let oWonDiagonalLeft = topLeftValue == true && centerCenterValue == true && bottomRightValue == true
-            let oWonDiagonalRight = topRightValue == true && centerCenterValue == true && bottomLeftValue == true
-            let oWonLeftVertical = topLeftValue == true && centerLeftValue == true && bottomLeftValue == true
-            let oWonCenterVertical = topCenterValue == true && centerCenterValue == true && bottomCenterValue == true
-            let oWonRightVertical = topRightValue == true && centerRightValue == true && bottomRightValue == true
+            let oWonTopHorizontal = topLeftValue?.isX == false && topCenterValue?.isX == false && topRightValue?.isX == false
+            if oWonTopHorizontal {
+                animateEntities(positions: [.topLeft, .topCenter, .topRight])
+            }
             
-            if oWonTopHorizontal || oWonCenterHorizontal || oWonBottomHorizontal ||
-                    oWonDiagonalLeft || oWonDiagonalRight ||
-                    oWonLeftVertical || oWonCenterVertical || oWonRightVertical {
-                print("o won")
-                return
+            let oWonCenterHorizontal = centerLeftValue?.isX == false && centerCenterValue?.isX == false && centerRightValue?.isX == false
+            if oWonCenterHorizontal {
+                animateEntities(positions: [.centerLeft, .centerCenter, .centerRight])
+            }
+            
+            let oWonBottomHorizontal = bottomLeftValue?.isX == false && bottomCenterValue?.isX == false && bottomRightValue?.isX == false
+            if oWonBottomHorizontal {
+                animateEntities(positions: [.bottomLeft, .bottomCenter, .bottomRight])
+            }
+            
+            
+            let oWonDiagonalLeft = topLeftValue?.isX == false && centerCenterValue?.isX == false && bottomRightValue?.isX == false
+            if oWonDiagonalLeft {
+                animateEntities(positions: [.topLeft, .centerCenter, .bottomRight])
+            }
+            
+            
+            let oWonDiagonalRight = topRightValue?.isX == false && centerCenterValue?.isX == false && bottomLeftValue?.isX == false
+            if oWonDiagonalRight {
+                animateEntities(positions: [.topRight, .centerCenter, .bottomLeft])
+            }
+            
+            
+            let oWonLeftVertical = topLeftValue?.isX == false && centerLeftValue?.isX == false && bottomLeftValue?.isX == false
+            if oWonLeftVertical {
+                animateEntities(positions: [.topLeft, .centerLeft, .bottomLeft])
+            }
+            
+            
+            let oWonCenterVertical = topCenterValue?.isX == false && centerCenterValue?.isX == false && bottomCenterValue?.isX == false
+            if oWonCenterVertical {
+                animateEntities(positions: [.topCenter, .centerCenter, .bottomCenter])
+            }
+            
+            
+            let oWonRightVertical = topRightValue?.isX == false && centerRightValue?.isX == false && bottomRightValue?.isX == false
+            if oWonRightVertical {
+                animateEntities(positions: [.topRight, .centerRight, .bottomRight])
             }
         }
         
