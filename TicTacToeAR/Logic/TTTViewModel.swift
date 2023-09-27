@@ -15,11 +15,14 @@ class TTTViewModel {
     private var isXTurn = true
     private var boardValues = [XOPosition: XOModel]()
     private var cancellables: Set<AnyCancellable> = []
+    private var gameAnchor: AnchorEntity?
+    private var scene: Scene?
     
     func addBoardEntity(in scene: Scene) {
+        self.scene = scene
         let anchor = AnchorEntity(plane: .horizontal, minimumBounds: [0.2, 0.2])
         anchor.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchor)
-
+        self.gameAnchor = anchor
         ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -87,6 +90,13 @@ class TTTViewModel {
     func restartGame() {
         isXTurn = true
         boardValues = [:]
+        guard let scene = scene else { return }
+        guard let gameAnchor = self.gameAnchor else { return }
+        scene.removeAnchor(gameAnchor)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.addBoardEntity(in: scene)
+        }
     }
     
     private func checkGameStatus() {
