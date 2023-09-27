@@ -22,10 +22,6 @@ class TTTViewModel: ObservableObject {
     @Published var isGameOver = false
     
     func addBoardEntity(in scene: RealityKit.Scene, arView: ARView) {
-//        let anchor = AnchorEntity(plane: .horizontal, minimumBounds: [0.2, 0.2])
-//        anchor.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchor)
-        
-        //self.gameAnchor = anchor
         ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -36,10 +32,6 @@ class TTTViewModel: ObservableObject {
                 guard let self = self else { return }
                 entity.name = TTTAsset.board.rawValue
                 entity.generateCollisionShapes(recursive: true)
-                //anchor.addChild(entity)
-
-                //scene.addAnchor(anchor)
-                
                 arView.installGestures(.all, for: entity)
                 self.boardEntity = entity
             })

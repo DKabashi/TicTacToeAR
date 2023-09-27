@@ -24,6 +24,9 @@ class TTTARView: ARView {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
         viewModel.addBoardEntity(in: scene, arView: self)
         viewModel.restartGameAction = restartGame
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            self.removeEditBoardGestures()
+        }
     }
     
     private func restartGame() {
@@ -34,6 +37,15 @@ class TTTARView: ARView {
             guard let self = self else { return }
             self.viewModel.addBoardEntity(in: self.scene, arView: self)
             self.viewModel.gameAnchor = nil
+        }
+    }
+    
+    private func removeEditBoardGestures() {
+        for gesture in (self.gestureRecognizers ?? []) where
+            gesture is RealityKit.EntityScaleGestureRecognizer ||
+            gesture is RealityKit.EntityRotationGestureRecognizer ||
+            gesture is RealityKit.EntityTranslationGestureRecognizer {
+            self.removeGestureRecognizer(gesture)
         }
     }
 
@@ -47,9 +59,9 @@ class TTTARView: ARView {
                 let anchorEntity = AnchorEntity(world: result.worldTransform)
                 anchorEntity.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchorEntity)
                 anchorEntity.addChild(viewModel.boardEntity)
-                for position in XOPosition.allCases {
-                    viewModel.generateTapEntity(in: position, anchor: anchorEntity)
-                }
+//                for position in XOPosition.allCases {
+//                    viewModel.generateTapEntity(in: position, anchor: anchorEntity)
+//                }
                 
                 scene.addAnchor(anchorEntity)
                 viewModel.gameAnchor = anchorEntity
