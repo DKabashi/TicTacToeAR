@@ -16,15 +16,15 @@ class TTTViewModel: ObservableObject {
     private var isXTurn = true
     private var boardValues = [XOPosition: XOModel]()
     private var cancellables: Set<AnyCancellable> = []
-    private var gameAnchor: AnchorEntity?
-    private var scene: RealityKit.Scene?
-    
+
+    var gameAnchor: AnchorEntity?
+    var restartGameAction: (() -> Void)?
     @Published var isGameOver = false
     
-    func addBoardEntity(in scene: RealityKit.Scene) {
-        self.scene = scene
+    func addBoardEntity(in scene: RealityKit.Scene, arView: ARView) {
         let anchor = AnchorEntity(plane: .horizontal, minimumBounds: [0.2, 0.2])
         anchor.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchor)
+        
         self.gameAnchor = anchor
         ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
             .sink(receiveCompletion: { completion in
@@ -43,10 +43,11 @@ class TTTViewModel: ObservableObject {
                 }
                 
                 scene.addAnchor(anchor)
+                
+                arView.installGestures(.all, for: entity)
                 self.boardEntity = entity
             })
             .store(in: &cancellables)
-        
     }
     
     func addXOEntity(in entity: ModelEntity, at postion: XOPosition) {
@@ -75,6 +76,15 @@ class TTTViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    func restartGame() {
+        isXTurn = true
+        boardValues = [:]
+        withAnimation {
+            isGameOver = false
+        }
+        restartGameAction?()
+    }
+    
     private func animateEntities(positions: [XOPosition]) {
         for position in positions {
             guard let xoEntity = boardValues[position]?.entity else { continue }
@@ -91,21 +101,6 @@ class TTTViewModel: ObservableObject {
         
         withAnimation {
             isGameOver = true
-        }
-    }
-    
-    func restartGame() {
-        isXTurn = true
-        boardValues = [:]
-        withAnimation {
-            isGameOver = false
-        }
-        guard let scene = scene else { return }
-        guard let gameAnchor = self.gameAnchor else { return }
-        scene.removeAnchor(gameAnchor)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.addBoardEntity(in: scene)
         }
     }
     

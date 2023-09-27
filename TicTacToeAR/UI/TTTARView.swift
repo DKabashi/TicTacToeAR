@@ -22,7 +22,18 @@ class TTTARView: ARView {
     
     private func setup() {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
-        viewModel.addBoardEntity(in: scene)
+        viewModel.addBoardEntity(in: scene, arView: self)
+        viewModel.restartGameAction = restartGame
+    }
+    
+    private func restartGame() {
+        guard let gameAnchor = viewModel.gameAnchor else { return }
+        scene.removeAnchor(gameAnchor)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            guard let self = self else { return }
+            self.viewModel.addBoardEntity(in: self.scene, arView: self)
+        }
     }
     
     @objc private func viewTapped(_ recognizer: UITapGestureRecognizer) {
