@@ -243,8 +243,8 @@ class TTTViewModel: ObservableObject {
         }
         
         let rectangle = MeshResource.generatePlane(width: 45.66, depth: 45.66)
-        let material = SimpleMaterial(color: .red, isMetallic: false)
-        
+        var material = SimpleMaterial()
+        material.color = .init(tint: .white.withAlphaComponent(0.001), texture: nil)
         let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
         tapEntity.generateCollisionShapes(recursive: true)
         tapEntity.name = postion.rawValue
