@@ -33,12 +33,30 @@ class TTTARView: ARView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self = self else { return }
             self.viewModel.addBoardEntity(in: self.scene, arView: self)
+            self.viewModel.gameAnchor = nil
         }
     }
-    
+
     @objc private func viewTapped(_ recognizer: UITapGestureRecognizer) {
-        guard !viewModel.isGameOver else { return }
         let tapLocation = recognizer.location(in: self)
+        if viewModel.gameAnchor == nil {
+            let results = raycast(from: tapLocation,
+                                         allowing: .estimatedPlane,
+                                         alignment: .horizontal)
+            if let result = results.first {
+                let anchorEntity = AnchorEntity(world: result.worldTransform)
+                anchorEntity.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchorEntity)
+                anchorEntity.addChild(viewModel.boardEntity)
+                for position in XOPosition.allCases {
+                    viewModel.generateTapEntity(in: position, anchor: anchorEntity)
+                }
+                
+                scene.addAnchor(anchorEntity)
+                viewModel.gameAnchor = anchorEntity
+            }
+            return
+        }
+        guard !viewModel.isGameOver else { return }
         if let entity = self.entity(at: tapLocation) as? ModelEntity, let position = XOPosition(rawValue: entity.name) {
             viewModel.addXOEntity(in: entity, at: position)
         }
@@ -52,4 +70,3 @@ class TTTARView: ARView {
         fatalError("init(frame:) has not been implemented")
     }
 }
-

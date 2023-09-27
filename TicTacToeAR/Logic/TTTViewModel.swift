@@ -12,7 +12,7 @@ import Combine
 import SwiftUI
 
 class TTTViewModel: ObservableObject {
-    private var boardEntity: ModelEntity!
+    var boardEntity: ModelEntity!
     private var isXTurn = true
     private var boardValues = [XOPosition: XOModel]()
     private var cancellables: Set<AnyCancellable> = []
@@ -22,10 +22,10 @@ class TTTViewModel: ObservableObject {
     @Published var isGameOver = false
     
     func addBoardEntity(in scene: RealityKit.Scene, arView: ARView) {
-        let anchor = AnchorEntity(plane: .horizontal, minimumBounds: [0.2, 0.2])
-        anchor.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchor)
+//        let anchor = AnchorEntity(plane: .horizontal, minimumBounds: [0.2, 0.2])
+//        anchor.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchor)
         
-        self.gameAnchor = anchor
+        //self.gameAnchor = anchor
         ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -36,13 +36,9 @@ class TTTViewModel: ObservableObject {
                 guard let self = self else { return }
                 entity.name = TTTAsset.board.rawValue
                 entity.generateCollisionShapes(recursive: true)
-                anchor.addChild(entity)
-                
-                for position in XOPosition.allCases {
-                    self.generateTapEntity(in: position, anchor: anchor)
-                }
-                
-                scene.addAnchor(anchor)
+                //anchor.addChild(entity)
+
+                //scene.addAnchor(anchor)
                 
                 arView.installGestures(.all, for: entity)
                 self.boardEntity = entity
@@ -212,7 +208,7 @@ class TTTViewModel: ObservableObject {
     /// Coordinates to position the entity inside the ttt_board.usdz:
     /// x: left: -46, center: 0.274, right: 46,
     /// z: left: -44, center: 3, right: 51
-    private func generateTapEntity(in postion: XOPosition, anchor: AnchorEntity) {
+    func generateTapEntity(in postion: XOPosition, anchor: AnchorEntity) {
         var xPos: Float!
         var zPos: Float!
 
@@ -247,7 +243,7 @@ class TTTViewModel: ObservableObject {
         }
         
         let rectangle = MeshResource.generatePlane(width: 45.66, depth: 45.66)
-        let material = SimpleMaterial(color: .clear.withAlphaComponent(0.0000001), isMetallic: false)
+        let material = SimpleMaterial(color: .red, isMetallic: false)
         
         let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
         tapEntity.generateCollisionShapes(recursive: true)
