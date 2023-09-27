@@ -12,14 +12,11 @@ import UIKit
 import Combine
 
 class TTTARView: ARView {
-    private let viewModel = TTTViewModel()
+    var viewModel: TTTViewModel
 
-    required init(frame frameRect: CGRect) {
-        super.init(frame: frameRect)
-    }
-
-    convenience init() {
-        self.init(frame: UIScreen.main.bounds)
+    init(viewModel: TTTViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: UIScreen.main.bounds)
         setup()
     }
     
@@ -37,6 +34,10 @@ class TTTARView: ARView {
 
     dynamic required init?(coder decoder: NSCoder) {
         fatalError("not used")
+    }
+    
+    required init(frame frameRect: CGRect) {
+        fatalError("init(frame:) has not been implemented")
     }
 }
 

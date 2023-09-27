@@ -84,7 +84,7 @@ class TTTViewModel {
         }
     }
     
-    private func restartGame() {
+    func restartGame() {
         isXTurn = true
         boardValues = [:]
     }
@@ -194,8 +194,9 @@ class TTTViewModel {
         
     }
     
-    /// x options: [-46, 0.274, 46],
-    /// z options: [-44, 3, 51]
+    /// Coordinates to position the entity inside the ttt_board.usdz:
+    /// x: left: -46, center: 0.274, right: 46,
+    /// z: left: -44, center: 3, right: 51
     private func generateTapEntity(in postion: XOPosition, anchor: AnchorEntity) {
         var xPos: Float!
         var zPos: Float!
