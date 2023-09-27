@@ -26,6 +26,7 @@ class TTTARView: ARView {
     }
     
     @objc private func viewTapped(_ recognizer: UITapGestureRecognizer) {
+        guard !viewModel.isGameOver else { return }
         let tapLocation = recognizer.location(in: self)
         if let entity = self.entity(at: tapLocation) as? ModelEntity, let position = XOPosition(rawValue: entity.name) {
             viewModel.addXOEntity(in: entity, at: position)

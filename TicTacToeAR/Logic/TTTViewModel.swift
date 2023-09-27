@@ -9,16 +9,19 @@ import ARKit
 import RealityKit
 import UIKit
 import Combine
+import SwiftUI
 
-class TTTViewModel {
+class TTTViewModel: ObservableObject {
     private var boardEntity: ModelEntity!
     private var isXTurn = true
     private var boardValues = [XOPosition: XOModel]()
     private var cancellables: Set<AnyCancellable> = []
     private var gameAnchor: AnchorEntity?
-    private var scene: Scene?
+    private var scene: RealityKit.Scene?
     
-    func addBoardEntity(in scene: Scene) {
+    @Published var isGameOver = false
+    
+    func addBoardEntity(in scene: RealityKit.Scene) {
         self.scene = scene
         let anchor = AnchorEntity(plane: .horizontal, minimumBounds: [0.2, 0.2])
         anchor.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchor)
@@ -85,11 +88,18 @@ class TTTViewModel {
                 xoEntity.move(to: rotation, relativeTo: xoEntity.parent, duration: 0.3, timingFunction: .easeInOut)
             }
         }
+        
+        withAnimation {
+            isGameOver = true
+        }
     }
     
     func restartGame() {
         isXTurn = true
         boardValues = [:]
+        withAnimation {
+            isGameOver = false
+        }
         guard let scene = scene else { return }
         guard let gameAnchor = self.gameAnchor else { return }
         scene.removeAnchor(gameAnchor)

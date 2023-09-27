@@ -8,29 +8,54 @@
 import SwiftUI
 
 struct TTTView: View {
-    private let viewModel = TTTViewModel()
-
+    @StateObject var viewModel = TTTViewModel()
+    
     var body: some View {
         ZStack {
             TTTARViewRepresentable(viewModel: viewModel)
-            reloadButton
+            topBarElements
         }
+        .ignoresSafeArea()
+    }
+    
+    var topBarElements: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 0) {
+                Spacer()
+                    .frame(width: 50, height: 50)
+                Spacer()
+                gameOverText
+                Spacer()
+                reloadButton
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+    }
+        
+    var gameOverText: some View {
+        Text("Game over!")
+            .font(.system(size: 20))
+            .foregroundColor(.white)
+            .padding()
+            .background(
+                Capsule()
+                    .fill(Color.gray.opacity(0.4)))
+            .padding(.top, viewModel.isGameOver ? 60 : -60)
+            .opacity(viewModel.isGameOver ? 1 : 0)
     }
     
     var reloadButton: some View {
-        VStack {
-            Button(action: viewModel.restartGame, label: {
-                Image(systemName: "arrow.clockwise")
-                    .font(.system(size: 25))
-                    .padding()
-                    .background(Color.white.opacity(0.3))
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(5)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding([.top, .trailing], 20)
-            })
-            Spacer()
-        }
+        Button(action: viewModel.restartGame, label: {
+            Image(systemName: "arrow.clockwise")
+                .font(.system(size: 25))
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.gray.opacity(0.4))
+                .frame(width: 50, height: 50)
+                .cornerRadius(5)
+                .padding(.top, 60)
+        })
     }
 }
 
