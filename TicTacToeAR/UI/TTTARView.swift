@@ -24,9 +24,6 @@ class TTTARView: ARView {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
         viewModel.addBoardEntity(in: scene, arView: self)
         viewModel.restartGameAction = restartGame
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            self.removeEditBoardGestures()
-        }
     }
     
     private func restartGame() {
@@ -48,7 +45,14 @@ class TTTARView: ARView {
             self.removeGestureRecognizer(gesture)
         }
     }
-
+#warning("uncomment this")
+//                for position in XOPosition.allCases {
+//                    viewModel.generateTapEntity(in: position, anchor: anchorEntity)
+//                }
+    
+    //DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+//    self.removeEditBoardGestures()
+//}
     @objc private func viewTapped(_ recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: self)
         if viewModel.gameAnchor == nil {
@@ -59,12 +63,13 @@ class TTTARView: ARView {
                 let anchorEntity = AnchorEntity(world: result.worldTransform)
                 anchorEntity.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchorEntity)
                 anchorEntity.addChild(viewModel.boardEntity)
-//                for position in XOPosition.allCases {
-//                    viewModel.generateTapEntity(in: position, anchor: anchorEntity)
-//                }
                 
                 scene.addAnchor(anchorEntity)
                 viewModel.gameAnchor = anchorEntity
+                withAnimation {
+                    viewModel.isTapScreenPresented = false
+                    viewModel.isAdjustBoardPresented = true
+                }
             }
             return
         }

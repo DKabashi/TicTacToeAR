@@ -20,6 +20,8 @@ class TTTViewModel: ObservableObject {
     var gameAnchor: AnchorEntity?
     var restartGameAction: (() -> Void)?
     @Published var isGameOver = false
+    @Published var isTapScreenPresented = true
+    @Published var isAdjustBoardPresented = false
     
     func addBoardEntity(in scene: RealityKit.Scene, arView: ARView) {
         ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)

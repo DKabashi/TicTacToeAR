@@ -14,6 +14,8 @@ struct TTTView: View {
         ZStack {
             TTTARViewRepresentable(viewModel: viewModel)
             topBarElements
+            tapScreenText
+            adjustBoardText
         }
         .ignoresSafeArea()
     }
@@ -38,11 +40,50 @@ struct TTTView: View {
             .font(.system(size: 20))
             .foregroundColor(.white)
             .padding()
-            .background(
-                Capsule()
-                    .fill(Color.gray.opacity(0.4)))
+            .background(Color.gray.opacity(0.6))
+            .cornerRadius(5)
             .padding(.top, viewModel.isGameOver ? 60 : -60)
             .opacity(viewModel.isGameOver ? 1 : 0)
+    }
+    
+    var tapScreenText: some View {
+        VStack(spacing: 0) {
+            Spacer()
+            VStack{
+                Image(systemName: "hand.tap")
+                    .font(.system(size: 40))
+                    .padding()
+                Text("Tap a horizontal surface where you want to place the board")
+                    .font(.system(size: 20))
+                    .padding()
+                    .background(Color.gray.opacity(0.6))
+                    .cornerRadius(5)
+            }
+                .foregroundColor(.white)
+                .padding(.bottom, viewModel.isTapScreenPresented ? 60 : -60)
+                .opacity(viewModel.isTapScreenPresented ? 1 : 0)
+        }
+        .padding(.horizontal, 20)
+    }
+    
+    var adjustBoardText: some View {
+        VStack(spacing: 0) {
+            Spacer()
+            VStack{
+                Image(systemName: "hand.draw")
+                    .font(.system(size: 40))
+                    .padding()
+                Text("Resize, rotate, or reposition the board according to your liking. Press start when you are ready.")
+                    .font(.system(size: 20))
+                    .padding()
+                    .background(Color.gray.opacity(0.6))
+                    .cornerRadius(5)
+            }
+                .foregroundColor(.white)
+                .padding(.bottom, viewModel.isAdjustBoardPresented ? 60 : -60)
+                .opacity(viewModel.isAdjustBoardPresented ? 1 : 0)
+        }
+        .padding(.horizontal, 20)
     }
     
     var reloadButton: some View {
@@ -51,7 +92,7 @@ struct TTTView: View {
                 .font(.system(size: 25))
                 .foregroundColor(.white)
                 .padding()
-                .background(Color.gray.opacity(0.4))
+                .background(Color.gray.opacity(0.6))
                 .frame(width: 50, height: 50)
                 .cornerRadius(5)
                 .padding(.top, 60)
