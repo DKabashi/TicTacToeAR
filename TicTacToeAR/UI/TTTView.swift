@@ -15,7 +15,7 @@ struct TTTView: View {
             TTTARViewRepresentable(viewModel: viewModel)
             topBarElements
             tapScreenText
-            adjustBoardText
+            startGameElements
         }
         .ignoresSafeArea()
     }
@@ -28,6 +28,10 @@ struct TTTView: View {
                 Spacer()
                 gameOverText
                 Spacer()
+                if viewModel.isAdjustBoardPresented {
+                    startButton
+                        .padding(.trailing)
+                }
                 reloadButton
             }
             Spacer()
@@ -66,29 +70,46 @@ struct TTTView: View {
         .padding(.horizontal, 20)
     }
     
-    var adjustBoardText: some View {
+    var startGameElements: some View {
         VStack(spacing: 0) {
             Spacer()
-            VStack{
-                Image(systemName: "hand.draw")
-                    .font(.system(size: 40))
-                    .padding()
-                Text("Resize, rotate, or reposition the board according to your liking. Press start when you are ready.")
-                    .font(.system(size: 20))
-                    .padding()
-                    .background(Color.gray.opacity(0.6))
-                    .cornerRadius(5)
-            }
-                .foregroundColor(.white)
-                .padding(.bottom, viewModel.isAdjustBoardPresented ? 60 : -60)
-                .opacity(viewModel.isAdjustBoardPresented ? 1 : 0)
+            adjustBoardText
         }
         .padding(.horizontal, 20)
+    }
+    
+    var adjustBoardText: some View {
+        VStack {
+            Image(systemName: "hand.draw")
+                .font(.system(size: 40))
+                .padding()
+            Text("Resize, rotate, or reposition the board according to your liking. Press start button when you are ready.")
+                .font(.system(size: 20))
+                .padding()
+                .background(Color.gray.opacity(0.6))
+                .cornerRadius(5)
+        }
+        .foregroundColor(.white)
+        .padding(.bottom, viewModel.isAdjustBoardPresented ? 60 : -60)
+        .opacity(viewModel.isAdjustBoardPresented ? 1 : 0)
     }
     
     var reloadButton: some View {
         Button(action: viewModel.restartGame, label: {
             Image(systemName: "arrow.clockwise")
+                .font(.system(size: 25))
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.gray.opacity(0.6))
+                .frame(width: 50, height: 50)
+                .cornerRadius(5)
+                .padding(.top, 60)
+        })
+    }
+    
+    var startButton: some View {
+        Button(action: viewModel.startGame, label: {
+            Image(systemName: "play")
                 .font(.system(size: 25))
                 .foregroundColor(.white)
                 .padding()

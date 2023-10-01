@@ -24,6 +24,7 @@ class TTTARView: ARView {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
         viewModel.addBoardEntity(in: scene, arView: self)
         viewModel.restartGameAction = restartGame
+        viewModel.removeEditBoardGestures = removeEditBoardGestures
     }
     
     private func restartGame() {
@@ -45,14 +46,7 @@ class TTTARView: ARView {
             self.removeGestureRecognizer(gesture)
         }
     }
-#warning("uncomment this")
-//                for position in XOPosition.allCases {
-//                    viewModel.generateTapEntity(in: position, anchor: anchorEntity)
-//                }
-    
-    //DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-//    self.removeEditBoardGestures()
-//}
+
     @objc private func viewTapped(_ recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: self)
         if viewModel.gameAnchor == nil {
@@ -62,6 +56,9 @@ class TTTARView: ARView {
             if let result = results.first {
                 let anchorEntity = AnchorEntity(world: result.worldTransform)
                 anchorEntity.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchorEntity)
+//                let boxSize: SIMD3<Float> = [0.1, 0.1, 0.1]
+//                anchorEntity.components[CollisionComponent] = CollisionComponent(shapes: [.generateBox(size: boxSize)])
+//
                 anchorEntity.addChild(viewModel.boardEntity)
                 
                 scene.addAnchor(anchorEntity)

@@ -19,6 +19,7 @@ class TTTViewModel: ObservableObject {
 
     var gameAnchor: AnchorEntity?
     var restartGameAction: (() -> Void)?
+    var removeEditBoardGestures: (() -> Void)?
     @Published var isGameOver = false
     @Published var isTapScreenPresented = true
     @Published var isAdjustBoardPresented = false
@@ -41,7 +42,7 @@ class TTTViewModel: ObservableObject {
     }
     
     func addXOEntity(in entity: ModelEntity, at postion: XOPosition) {
-        let entityHasNoValue =  boardEntity.scene?.anchors.first?.children.first {
+        let entityHasNoValue = boardEntity.children.first {
                 $0.name == postion.rawValue
         }?.children.allSatisfy { $0.name != TTTAsset.x.rawValue && $0.name != TTTAsset.o.rawValue } ?? false
         
@@ -75,6 +76,16 @@ class TTTViewModel: ObservableObject {
         restartGameAction?()
     }
     
+    func startGame() {
+        withAnimation {
+            isAdjustBoardPresented = false
+        }
+        for position in XOPosition.allCases {
+            generateTapEntity(in: position)
+        }
+        removeEditBoardGestures?()
+    }
+    
     private func animateEntities(positions: [XOPosition]) {
         for position in positions {
             guard let xoEntity = boardValues[position]?.entity else { continue }
@@ -94,6 +105,56 @@ class TTTViewModel: ObservableObject {
         }
     }
     
+    /// Coordinates to position the entity inside the ttt_board.usdz:
+    /// x: left: -46, center: 0.274, right: 46,
+    /// z: left: -44, center: 3, right: 51
+    func generateTapEntity(in postion: XOPosition) {
+        var xPos: Float!
+        var zPos: Float!
+
+        switch postion {
+        case .topLeft:
+            xPos = -46
+            zPos = -44
+        case .topCenter:
+            xPos = 0.274
+            zPos = -44
+        case .topRight:
+            xPos = 46
+            zPos = -44
+        case .centerLeft:
+            xPos = -46
+            zPos = 3
+        case .centerCenter:
+            xPos = 0.274
+            zPos = 3
+        case .centerRight:
+            xPos = 46
+            zPos = 3
+        case .bottomLeft:
+            xPos = -46
+            zPos = 51
+        case .bottomCenter:
+            xPos = 0.274
+            zPos = 51
+        case .bottomRight:
+            xPos = 46
+            zPos = 51
+        }
+        
+        let rectangle = MeshResource.generatePlane(width: 45.66, depth: 45.66)
+        var material = SimpleMaterial()
+        material.color = .init(tint: .white.withAlphaComponent(0.001), texture: nil)
+        let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
+        tapEntity.generateCollisionShapes(recursive: true)
+        tapEntity.name = postion.rawValue
+        tapEntity.position = [xPos, 0, zPos]
+        boardEntity.addChild(tapEntity)
+    }
+}
+
+// MARK: - Game Logic
+extension TTTViewModel {
     private func checkGameStatus() {
         let topLeftValue = boardValues[.topLeft]
         let topCenterValue = boardValues[.topCenter]
@@ -197,52 +258,5 @@ class TTTViewModel: ObservableObject {
             return
         }
         
-    }
-    
-    /// Coordinates to position the entity inside the ttt_board.usdz:
-    /// x: left: -46, center: 0.274, right: 46,
-    /// z: left: -44, center: 3, right: 51
-    func generateTapEntity(in postion: XOPosition, anchor: AnchorEntity) {
-        var xPos: Float!
-        var zPos: Float!
-
-        switch postion {
-        case .topLeft:
-            xPos = -46
-            zPos = -44
-        case .topCenter:
-            xPos = 0.274
-            zPos = -44
-        case .topRight:
-            xPos = 46
-            zPos = -44
-        case .centerLeft:
-            xPos = -46
-            zPos = 3
-        case .centerCenter:
-            xPos = 0.274
-            zPos = 3
-        case .centerRight:
-            xPos = 46
-            zPos = 3
-        case .bottomLeft:
-            xPos = -46
-            zPos = 51
-        case .bottomCenter:
-            xPos = 0.274
-            zPos = 51
-        case .bottomRight:
-            xPos = 46
-            zPos = 51
-        }
-        
-        let rectangle = MeshResource.generatePlane(width: 45.66, depth: 45.66)
-        var material = SimpleMaterial()
-        material.color = .init(tint: .white.withAlphaComponent(0.001), texture: nil)
-        let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
-        tapEntity.generateCollisionShapes(recursive: true)
-        tapEntity.name = postion.rawValue
-        tapEntity.position = [xPos, 0, zPos]
-        anchor.addChild(tapEntity)
     }
 }
