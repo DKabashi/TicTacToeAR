@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81162C8A2ACAAFE90037AF02 /* ttt_board.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81162C892ACAAFE90037AF02 /* ttt_board.usdz */; };
 		818754B02AC3528F00E5CCA9 /* XOModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818754AF2AC3528F00E5CCA9 /* XOModel.swift */; };
 		81A9C8EF2A93A25B00452FCB /* TicTacToeARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */; };
 		81A9C8F32A93A25D00452FCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C8F22A93A25D00452FCB /* Assets.xcassets */; };
@@ -15,7 +16,6 @@
 		81A9C8FF2A93A2E000452FCB /* TTTARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */; };
 		81A9C9042A93A34A00452FCB /* TTTView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C9032A93A34A00452FCB /* TTTView.swift */; };
 		81A9C9092A93A3B600452FCB /* ttt_o.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C9062A93A3B600452FCB /* ttt_o.usdz */; };
-		81A9C90A2A93A3B600452FCB /* ttt_board.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C9072A93A3B600452FCB /* ttt_board.usdz */; };
 		81A9C90B2A93A3B600452FCB /* ttt_x.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C9082A93A3B600452FCB /* ttt_x.usdz */; };
 		81F7C7452AA73F3500D8EB50 /* XOPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F7C7442AA73F3500D8EB50 /* XOPosition.swift */; };
 		81F7C7472AA7681100D8EB50 /* TTTAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F7C7462AA7681100D8EB50 /* TTTAsset.swift */; };
@@ -23,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		81162C892ACAAFE90037AF02 /* ttt_board.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_board.usdz; sourceTree = "<group>"; };
 		818754AF2AC3528F00E5CCA9 /* XOModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOModel.swift; sourceTree = "<group>"; };
 		81A9C8EB2A93A25B00452FCB /* TicTacToeAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToeAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeARApp.swift; sourceTree = "<group>"; };
@@ -32,7 +33,6 @@
 		81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTARViewRepresentable.swift; sourceTree = "<group>"; };
 		81A9C9032A93A34A00452FCB /* TTTView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTView.swift; sourceTree = "<group>"; };
 		81A9C9062A93A3B600452FCB /* ttt_o.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_o.usdz; sourceTree = "<group>"; };
-		81A9C9072A93A3B600452FCB /* ttt_board.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_board.usdz; sourceTree = "<group>"; };
 		81A9C9082A93A3B600452FCB /* ttt_x.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_x.usdz; sourceTree = "<group>"; };
 		81F7C7442AA73F3500D8EB50 /* XOPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOPosition.swift; sourceTree = "<group>"; };
 		81F7C7462AA7681100D8EB50 /* TTTAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTAsset.swift; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 		81A9C9052A93A3AD00452FCB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				81A9C9072A93A3B600452FCB /* ttt_board.usdz */,
+				81162C892ACAAFE90037AF02 /* ttt_board.usdz */,
 				81A9C9062A93A3B600452FCB /* ttt_o.usdz */,
 				81A9C9082A93A3B600452FCB /* ttt_x.usdz */,
 				81F7C7462AA7681100D8EB50 /* TTTAsset.swift */,
@@ -177,8 +177,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				81A9C8F62A93A25D00452FCB /* Preview Assets.xcassets in Resources */,
-				81A9C90A2A93A3B600452FCB /* ttt_board.usdz in Resources */,
 				81A9C8F32A93A25D00452FCB /* Assets.xcassets in Resources */,
+				81162C8A2ACAAFE90037AF02 /* ttt_board.usdz in Resources */,
 				81A9C90B2A93A3B600452FCB /* ttt_x.usdz in Resources */,
 				81A9C9092A93A3B600452FCB /* ttt_o.usdz in Resources */,
 			);
