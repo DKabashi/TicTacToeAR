@@ -56,9 +56,7 @@ class TTTARView: ARView {
             if let result = results.first {
                 let anchorEntity = AnchorEntity(world: result.worldTransform)
                 anchorEntity.setScale(SIMD3<Float>(0.002, 0.002, 0.002), relativeTo: anchorEntity)
-//                let boxSize: SIMD3<Float> = [0.1, 0.1, 0.1]
-//                anchorEntity.components[CollisionComponent] = CollisionComponent(shapes: [.generateBox(size: boxSize)])
-//
+
                 anchorEntity.addChild(viewModel.boardEntity)
                 
                 scene.addAnchor(anchorEntity)

@@ -72,6 +72,7 @@ class TTTViewModel: ObservableObject {
         boardValues = [:]
         withAnimation {
             isGameOver = false
+            isTapScreenPresented = true
         }
         restartGameAction?()
     }
