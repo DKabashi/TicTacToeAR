@@ -23,6 +23,7 @@ class TTTViewModel: ObservableObject {
     @Published var isGameOver = false
     @Published var isTapScreenPresented = true
     @Published var isAdjustBoardPresented = false
+    @Published var isLoadingXOEntity = false
     
     func addBoardEntity(in scene: RealityKit.Scene, arView: ARView) {
         ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
@@ -47,9 +48,10 @@ class TTTViewModel: ObservableObject {
         }?.children.allSatisfy { $0.name != TTTAsset.x.rawValue && $0.name != TTTAsset.o.rawValue } ?? false
         
         guard entityHasNoValue else { return }
-
+        isLoadingXOEntity = true
         ModelEntity.loadModelAsync(named: (isXTurn ? TTTAsset.x : TTTAsset.o).rawValue)
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
+                self?.isLoadingXOEntity = false
                 switch completion {
                 case .failure(let err): print(err.localizedDescription)
                 default: return
@@ -63,6 +65,7 @@ class TTTViewModel: ObservableObject {
                 
                 self.checkGameStatus()
                 self.isXTurn.toggle()
+                self.isLoadingXOEntity = false
             })
             .store(in: &cancellables)
     }

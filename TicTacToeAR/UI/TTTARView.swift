@@ -68,7 +68,8 @@ class TTTARView: ARView {
             }
             return
         }
-        guard !viewModel.isGameOver else { return }
+        guard viewModel.isGameOver == false else { return }
+        guard viewModel.isLoadingXOEntity == false else { return }
         if let entity = self.entity(at: tapLocation) as? ModelEntity, let position = XOPosition(rawValue: entity.name) {
             viewModel.addXOEntity(in: entity, at: position)
         }
