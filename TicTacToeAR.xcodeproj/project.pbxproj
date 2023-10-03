@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		81162C8A2ACAAFE90037AF02 /* ttt_board.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 81162C892ACAAFE90037AF02 /* ttt_board.usdz */; };
+		81162C8C2ACC821F0037AF02 /* BoardPos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81162C8B2ACC821F0037AF02 /* BoardPos.swift */; };
 		818754B02AC3528F00E5CCA9 /* XOModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818754AF2AC3528F00E5CCA9 /* XOModel.swift */; };
 		81A9C8EF2A93A25B00452FCB /* TicTacToeARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */; };
 		81A9C8F32A93A25D00452FCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81A9C8F22A93A25D00452FCB /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		81162C892ACAAFE90037AF02 /* ttt_board.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ttt_board.usdz; sourceTree = "<group>"; };
+		81162C8B2ACC821F0037AF02 /* BoardPos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardPos.swift; sourceTree = "<group>"; };
 		818754AF2AC3528F00E5CCA9 /* XOModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOModel.swift; sourceTree = "<group>"; };
 		81A9C8EB2A93A25B00452FCB /* TicTacToeAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToeAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeARApp.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				818754AF2AC3528F00E5CCA9 /* XOModel.swift */,
+				81162C8B2ACC821F0037AF02 /* BoardPos.swift */,
 				81F7C7442AA73F3500D8EB50 /* XOPosition.swift */,
 				81F7C7482AA8990200D8EB50 /* TTTViewModel.swift */,
 			);
@@ -194,6 +197,7 @@
 				818754B02AC3528F00E5CCA9 /* XOModel.swift in Sources */,
 				81F7C7452AA73F3500D8EB50 /* XOPosition.swift in Sources */,
 				81A9C9042A93A34A00452FCB /* TTTView.swift in Sources */,
+				81162C8C2ACC821F0037AF02 /* BoardPos.swift in Sources */,
 				81F7C7492AA8990200D8EB50 /* TTTViewModel.swift in Sources */,
 				81A9C8FF2A93A2E000452FCB /* TTTARViewRepresentable.swift in Sources */,
 				81F7C7472AA7681100D8EB50 /* TTTAsset.swift in Sources */,

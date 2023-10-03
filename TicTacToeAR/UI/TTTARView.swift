@@ -24,7 +24,7 @@ class TTTARView: ARView {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
         viewModel.addBoardEntity(in: scene, arView: self)
         viewModel.restartGameAction = restartGame
-        viewModel.removeEditBoardGestures = removeEditBoardGestures
+        viewModel.removeEditBoardGesturesAction = removeEditBoardGestures
     }
     
     private func restartGame() {

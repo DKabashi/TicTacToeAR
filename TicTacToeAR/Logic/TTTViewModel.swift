@@ -12,27 +12,53 @@ import Combine
 import SwiftUI
 
 class TTTViewModel: ObservableObject {
-    var boardEntity: ModelEntity!
     private var isXTurn = true
     private var boardValues = [XOPosition: XOModel]()
     private var cancellables: Set<AnyCancellable> = []
 
+    var boardEntity: ModelEntity!
     var gameAnchor: AnchorEntity?
     var restartGameAction: (() -> Void)?
-    var removeEditBoardGestures: (() -> Void)?
+    var removeEditBoardGesturesAction: (() -> Void)?
+
     @Published var isGameOver = false
     @Published var isTapScreenPresented = true
     @Published var isAdjustBoardPresented = false
     @Published var isLoadingXOEntity = false
     
+    func startGame() {
+        withAnimation {
+            isAdjustBoardPresented = false
+        }
+        for position in XOPosition.allCases {
+            generateTapEntity(in: position)
+        }
+        removeEditBoardGesturesAction?()
+    }
+    
+    func restartGame() {
+        isXTurn = true
+        boardValues = [:]
+        withAnimation {
+            isGameOver = false
+            isTapScreenPresented = true
+        }
+        restartGameAction?()
+    }
+    
+    private func endGame() {
+        withAnimation {
+            isGameOver = true
+        }
+    }
+}
+
+// MARK: - Insert ModelEntities
+extension TTTViewModel {
     func addBoardEntity(in scene: RealityKit.Scene, arView: ARView) {
         ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .failure(let err): print(err.localizedDescription)
-                default: return
-                }
-            }, receiveValue: { [weak self] entity in
+            .sink(receiveCompletion: { completion in },
+                  receiveValue: { [weak self] entity in
                 guard let self = self else { return }
                 entity.name = TTTAsset.board.rawValue
                 entity.generateCollisionShapes(recursive: true)
@@ -59,8 +85,8 @@ class TTTViewModel: ObservableObject {
             }, receiveValue: { [weak self] xoEntity in
                 guard let self = self else { return }
                 xoEntity.name = (self.isXTurn ? TTTAsset.x : TTTAsset.o).rawValue
-
                 entity.addChild(xoEntity)
+                
                 self.boardValues[postion] = XOModel(isX: self.isXTurn, entity: xoEntity)
                 
                 self.checkGameStatus()
@@ -70,26 +96,53 @@ class TTTViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func restartGame() {
-        isXTurn = true
-        boardValues = [:]
-        withAnimation {
-            isGameOver = false
-            isTapScreenPresented = true
+    func generateTapEntity(in postion: XOPosition) {        
+        var xPos: BoardPos!
+        var zPos: BoardPos!
+        
+        switch postion {
+        case .topLeft:
+            xPos = .xLeft
+            zPos = .zLeft
+        case .topCenter:
+            xPos = .xCenter
+            zPos = .zLeft
+        case .topRight:
+            xPos = .xRight
+            zPos = .zLeft
+        case .centerLeft:
+            xPos = .xLeft
+            zPos = .zCenter
+        case .centerCenter:
+            xPos = .xCenter
+            zPos = .zCenter
+        case .centerRight:
+            xPos = .xRight
+            zPos = .zCenter
+        case .bottomLeft:
+            xPos = .xLeft
+            zPos = .zRight
+        case .bottomCenter:
+            xPos = .xCenter
+            zPos = .zRight
+        case .bottomRight:
+            xPos = .xRight
+            zPos = .zRight
         }
-        restartGameAction?()
+        
+        let oneThirdBoardSize: Float = 45.66
+        let rectangle = MeshResource.generatePlane(width: oneThirdBoardSize, depth: oneThirdBoardSize, cornerRadius: 5)
+        let material = UnlitMaterial(color: .clear)
+        let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
+        tapEntity.generateCollisionShapes(recursive: true)
+        tapEntity.name = postion.rawValue
+        tapEntity.position = [xPos.rawValue, 0, zPos.rawValue]
+        boardEntity.addChild(tapEntity)
     }
-    
-    func startGame() {
-        withAnimation {
-            isAdjustBoardPresented = false
-        }
-        for position in XOPosition.allCases {
-            generateTapEntity(in: position)
-        }
-        removeEditBoardGestures?()
-    }
-    
+}
+
+// MARK: - Animation
+extension TTTViewModel {
     private func animateEntities(positions: [XOPosition]) {
         for position in positions {
             guard let xoEntity = boardValues[position]?.entity else { continue }
@@ -105,58 +158,6 @@ class TTTViewModel: ObservableObject {
         }
         
         endGame()
-    }
-    
-    private func endGame() {
-        withAnimation {
-            isGameOver = true
-        }
-    }
-    
-    /// Coordinates to position the entity inside the ttt_board.usdz:
-    /// x: left: -46, center: 0.274, right: 46,
-    /// z: left: -44, center: 3, right: 51
-    func generateTapEntity(in postion: XOPosition) {
-        var xPos: Float!
-        var zPos: Float!
-
-        switch postion {
-        case .topLeft:
-            xPos = -46
-            zPos = -44
-        case .topCenter:
-            xPos = 0.274
-            zPos = -44
-        case .topRight:
-            xPos = 46
-            zPos = -44
-        case .centerLeft:
-            xPos = -46
-            zPos = 3
-        case .centerCenter:
-            xPos = 0.274
-            zPos = 3
-        case .centerRight:
-            xPos = 46
-            zPos = 3
-        case .bottomLeft:
-            xPos = -46
-            zPos = 51
-        case .bottomCenter:
-            xPos = 0.274
-            zPos = 51
-        case .bottomRight:
-            xPos = 46
-            zPos = 51
-        }
-        
-        let rectangle = MeshResource.generatePlane(width: 45.66, depth: 45.66, cornerRadius: 5)
-        let material = UnlitMaterial(color: .clear)
-        let tapEntity = ModelEntity(mesh: rectangle, materials: [material])
-        tapEntity.generateCollisionShapes(recursive: true)
-        tapEntity.name = postion.rawValue
-        tapEntity.position = [xPos, 0, zPos]
-        boardEntity.addChild(tapEntity)
     }
 }
 
