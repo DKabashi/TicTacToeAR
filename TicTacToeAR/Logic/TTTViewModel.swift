@@ -104,6 +104,10 @@ class TTTViewModel: ObservableObject {
             }
         }
         
+        endGame()
+    }
+    
+    private func endGame() {
         withAnimation {
             isGameOver = true
         }
@@ -257,7 +261,7 @@ extension TTTViewModel {
         }
         
         if boardValues.count == 9 {
-            print("game over, no winners")
+            endGame()
             return
         }
         
