@@ -52,6 +52,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		81162C8D2ACDCA230037AF02 /* 3D Models */ = {
+			isa = PBXGroup;
+			children = (
+				81A9C9082A93A3B600452FCB /* ttt_x.usdz */,
+				81A9C9062A93A3B600452FCB /* ttt_o.usdz */,
+				81162C892ACAAFE90037AF02 /* ttt_board.usdz */,
+			);
+			path = "3D Models";
+			sourceTree = "<group>";
+		};
+		81162C8E2ACDCA3D0037AF02 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				818754AF2AC3528F00E5CCA9 /* XOModel.swift */,
+				81162C8B2ACC821F0037AF02 /* BoardPos.swift */,
+				81F7C7442AA73F3500D8EB50 /* XOPosition.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		81162C8F2ACDCA4C0037AF02 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				81F7C7482AA8990200D8EB50 /* TTTViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		81162C902ACDCA570037AF02 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		81162C912ACDCA5D0037AF02 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				81A9C8FC2A93A2C500452FCB /* TTTARView.swift */,
+				81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */,
+				81A9C9032A93A34A00452FCB /* TTTView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		81A9C8E22A93A25B00452FCB = {
 			isa = PBXGroup;
 			children = (
@@ -74,7 +120,6 @@
 				81A9C9052A93A3AD00452FCB /* Assets */,
 				81A9C9012A93A2F500452FCB /* Logic */,
 				81A9C9002A93A2F100452FCB /* UI */,
-				81A9C8F22A93A25D00452FCB /* Assets.xcassets */,
 				81A9C8F42A93A25D00452FCB /* Preview Content */,
 			);
 			path = TicTacToeAR;
@@ -91,10 +136,8 @@
 		81A9C9002A93A2F100452FCB /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				81A9C8EE2A93A25B00452FCB /* TicTacToeARApp.swift */,
-				81A9C9032A93A34A00452FCB /* TTTView.swift */,
-				81A9C8FE2A93A2E000452FCB /* TTTARViewRepresentable.swift */,
-				81A9C8FC2A93A2C500452FCB /* TTTARView.swift */,
+				81162C912ACDCA5D0037AF02 /* Views */,
+				81162C902ACDCA570037AF02 /* App */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -102,10 +145,8 @@
 		81A9C9012A93A2F500452FCB /* Logic */ = {
 			isa = PBXGroup;
 			children = (
-				818754AF2AC3528F00E5CCA9 /* XOModel.swift */,
-				81162C8B2ACC821F0037AF02 /* BoardPos.swift */,
-				81F7C7442AA73F3500D8EB50 /* XOPosition.swift */,
-				81F7C7482AA8990200D8EB50 /* TTTViewModel.swift */,
+				81162C8F2ACDCA4C0037AF02 /* ViewModels */,
+				81162C8E2ACDCA3D0037AF02 /* Models */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -113,10 +154,9 @@
 		81A9C9052A93A3AD00452FCB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				81162C892ACAAFE90037AF02 /* ttt_board.usdz */,
-				81A9C9062A93A3B600452FCB /* ttt_o.usdz */,
-				81A9C9082A93A3B600452FCB /* ttt_x.usdz */,
+				81162C8D2ACDCA230037AF02 /* 3D Models */,
 				81F7C7462AA7681100D8EB50 /* TTTAsset.swift */,
+				81A9C8F22A93A25D00452FCB /* Assets.xcassets */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
