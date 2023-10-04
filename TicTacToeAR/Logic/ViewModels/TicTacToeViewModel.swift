@@ -11,7 +11,7 @@ import UIKit
 import Combine
 import SwiftUI
 
-class TTTViewModel: ObservableObject {
+class TicTacToeViewModel: ObservableObject {
     private var isXTurn = true
     private var boardValues = [XOPosition: XOModel]()
     private var cancellables: Set<AnyCancellable> = []
@@ -48,13 +48,13 @@ class TTTViewModel: ObservableObject {
 }
 
 // MARK: - ModelEntities
-extension TTTViewModel {
+extension TicTacToeViewModel {
     func addBoardEntity(in scene: RealityKit.Scene, arView: ARView) {
-        ModelEntity.loadModelAsync(named: TTTAsset.board.rawValue)
+        ModelEntity.loadModelAsync(named: AssetReference.board.rawValue)
             .sink(receiveCompletion: { completion in },
                   receiveValue: { [weak self] entity in
                 guard let self = self else { return }
-                entity.name = TTTAsset.board.rawValue
+                entity.name = AssetReference.board.rawValue
                 entity.generateCollisionShapes(recursive: true)
                 arView.installGestures(.all, for: entity)
                 self.boardEntity = entity
@@ -65,11 +65,11 @@ extension TTTViewModel {
     func addXOEntity(in entity: ModelEntity, at postion: XOPosition) {
         let entityHasNoValue = boardEntity.children.first {
                 $0.name == postion.rawValue
-        }?.children.allSatisfy { $0.name != TTTAsset.x.rawValue && $0.name != TTTAsset.o.rawValue } ?? false
+        }?.children.allSatisfy { $0.name != AssetReference.x.rawValue && $0.name != AssetReference.o.rawValue } ?? false
         
         guard entityHasNoValue else { return }
         isLoadingXOEntity = true
-        ModelEntity.loadModelAsync(named: (isXTurn ? TTTAsset.x : TTTAsset.o).rawValue)
+        ModelEntity.loadModelAsync(named: (isXTurn ? AssetReference.x : AssetReference.o).rawValue)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoadingXOEntity = false
                 switch completion {
@@ -78,7 +78,7 @@ extension TTTViewModel {
                 }
             }, receiveValue: { [weak self] xoEntity in
                 guard let self = self else { return }
-                xoEntity.name = (self.isXTurn ? TTTAsset.x : TTTAsset.o).rawValue
+                xoEntity.name = (self.isXTurn ? AssetReference.x : AssetReference.o).rawValue
                 entity.addChild(xoEntity)
                 
                 self.boardValues[postion] = XOModel(isX: self.isXTurn, entity: xoEntity)
@@ -91,8 +91,8 @@ extension TTTViewModel {
     }
     
     func generateTapEntity(in postion: XOPosition) {        
-        var xPos: BoardPos!
-        var zPos: BoardPos!
+        var xPos: BoardPosition!
+        var zPos: BoardPosition!
         
         switch postion {
         case .topLeft:
@@ -136,7 +136,7 @@ extension TTTViewModel {
 }
 
 // MARK: - Animation
-extension TTTViewModel {
+extension TicTacToeViewModel {
     private func animateEntities(positions: [XOPosition]) {
         for position in positions {
             guard let xoEntity = boardValues[position]?.entity else { continue }
@@ -156,7 +156,7 @@ extension TTTViewModel {
 }
 
 // MARK: - Game Logic
-extension TTTViewModel {
+extension TicTacToeViewModel {
     private func checkGameStatus() {
             let winningCombinations: [[XOPosition]] = [
                 [.topLeft, .topCenter, .topRight],

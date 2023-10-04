@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum TTTAsset: String {
-    case board = "ttt_board", x = "ttt_x", o = "ttt_o"
+enum AssetReference: String {
+    case board = "Board", x = "XMarker", o = "OMarker"
 }

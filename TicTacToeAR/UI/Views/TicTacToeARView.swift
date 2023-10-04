@@ -11,10 +11,10 @@ import SwiftUI
 import UIKit
 import Combine
 
-class TTTARView: ARView {
-    var viewModel: TTTViewModel
+class TicTacToeARView: ARView {
+    var viewModel: TicTacToeViewModel
 
-    init(viewModel: TTTViewModel) {
+    init(viewModel: TicTacToeViewModel) {
         self.viewModel = viewModel
         super.init(frame: UIScreen.main.bounds)
         setup()

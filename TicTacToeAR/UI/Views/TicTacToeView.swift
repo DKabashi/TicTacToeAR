@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct TTTView: View {
-    @StateObject var viewModel = TTTViewModel()
+struct TicTacToeView: View {
+    @StateObject var viewModel = TicTacToeViewModel()
     
     var body: some View {
         ZStack {
-            TTTARViewRepresentable(viewModel: viewModel)
+            ARViewRepresentable(viewModel: viewModel)
             topBarElements
             tapScreenText
             startGameElements
@@ -123,6 +123,6 @@ struct TTTView: View {
 
 struct TTTView_Previews: PreviewProvider {
     static var previews: some View {
-        TTTView()
+        TicTacToeView()
     }
 }
