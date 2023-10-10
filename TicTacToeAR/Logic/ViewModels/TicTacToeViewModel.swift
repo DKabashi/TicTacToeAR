@@ -37,6 +37,7 @@ class TicTacToeViewModel: ObservableObject {
         boardValues.removeAll()
         withAnimation {
             isGameOver = false
+            isAdjustBoardPresented = false
             isTapScreenPresented = true
         }
         restartGameAction?()
