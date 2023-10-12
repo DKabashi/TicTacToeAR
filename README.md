@@ -14,4 +14,5 @@ Credits:
 - https://developer.apple.com/augmented-reality/arkit/
 - https://developer.apple.com/augmented-reality/realitykit/
 - https://www.youtube.com/watch?v=lamIxNozxv4
+- https://www.youtube.com/watch?v=mV7SWeMDEfg&t=1733s
 - https://sketchfab.com/tags/usdz
